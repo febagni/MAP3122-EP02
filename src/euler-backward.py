@@ -1,63 +1,50 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
+def partial_derivative(t, u, partial_in, f, step):
+    step_u = u.copy()
+    step_u[partial_in] += step
+    return (f(t,step_u) - f(t,u))/step
 
-def backwardEuler(f, yinit, x_range, h):
-    m = len(yinit)
-    n = int((x_range[-1] - x_range[0])/h)
-
-    x = x_range[0]
-    y = yinit
-
-    xsol = np.empty(0)
-    xsol = np.append(xsol, x)
-
-    ysol = np.empty(0)
-    ysol = np.append(ysol, y)
-
+def newton_iter(t, u, f, h, last_u):
+    n = len(u)
+    jacobian = np.identity(n)
+    G = np.zeros(len(u))
+    new_t = t + h
     for i in range(n):
-        yprime = f(x+h, y)/(1+h)
+        for j in range(n):
+            jacobian[i][j] -= h*partial_derivative(new_t, u, j, f[i], 0.001)
+    inv_jacobian = np.linalg.inv(jacobian)
+    for i in range(len(u)):
+        G[i] = u[i] - h * f[i](t,u) - last_u[i]
+    return u - np.matmul(inv_jacobian, G) # == new_u
 
-        for j in range(m):
-            y[j] = y[j] + h*yprime[j]
+def implicit_euler_iter(u, t, h, f):
+    newton_u = u.copy()
+    euler_u = u.copy()
+    for _ in range(7) :
+        newton_u = newton_iter(t, newton_u, f, h, u)
+    #print("u e newton u")
+    #print(u,newton_u)
+    for i in range(len(u)):
+        euler_u[i] = u + h * f[i](t, newton_u)
+    return euler_u
 
-        x += h
-        xsol = np.append(xsol, x)
+def implicit_euler_system(u, f, t0, tf, n):
+    u_values = []
+    new_u = u.copy()
+    u_values.append(new_u)
+    h = (tf-t0)/n
+    t = t0
+    for _ in range(1, n+1):
+        new_u = implicit_euler_iter(new_u,t,h,f)
+        u_values.append(new_u)
+        t += h
+    return u_values
+    
+u = np.array([-8.79])
+f = []
+f.append(lambda t,x : 2*t + (x-t*t)*(x-t*t))
 
-        for r in range(len(y)):
-            ysol = np.append(ysol, y[r])  # Saves all new y's
-
-    return [xsol, ysol]
-
-
-def myFunc(x, y):
-    '''
-    We define our ODEs in this function.
-    '''
-    dy = np.zeros((len(y)))
-    dy[0] = 2*x + (y-(x*x))*(y-(x*x))
-    return dy
-
-n = 5000
-h = (3-1.1)/n
-x = np.array([1.1, 3.0])
-yinit = np.array([-8.79])
-
-[ts, ys] = backwardEuler(f=myFunc, yinit=yinit, x_range=x, h=h)
-
-#--- Calculate the exact solution, for comparison ---#
-t = [x[0]+i*h for i in range(n+1)]
-yexact = []
-for i in range(n+1):
-    ye = t[i]*t[i] + 1/(1 - t[i])
-    yexact.append(ye)
-
-plt.plot(ts, ys, 'r')
-plt.plot(t, yexact, 'b')
-plt.xlim(x[0], x[1])
-plt.legend(["Backward Euler method",
-            "Exact solution"], loc=2)
-plt.xlabel('x', fontsize=17)
-plt.ylabel('y', fontsize=17)
-plt.tight_layout()
-plt.show()
+resposta_euler_implicito = implicit_euler_system(u, f, 1.1, 3.0, 5000)
+print(resposta_euler_implicito[5000])
