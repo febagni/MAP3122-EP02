@@ -1,5 +1,5 @@
 ##############################################################
-# File      :   exercicio2.vhd
+# File      :   exercicio2.py
 # Project   :   MAP3122 - EP02 - Metodos numericos para 
 #                                resolucao de EDOs
 # Date      :   April/2021
