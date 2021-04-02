@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 ##############################################################
 # File      :   exercicio3.py
 # Project   :   MAP3122 - EP02 - Metodos numericos para 

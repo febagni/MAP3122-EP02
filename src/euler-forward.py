@@ -1,62 +1,91 @@
+#!/usr/bin/env python3
+
+##############################################################
+# File      :   euler-forward.py
+# Project   :   MAP3122 - EP02 - Metodos numericos para 
+#                                resolucao de EDOs
+# Date      :   April/2021#!/usr/bin/env python3
+##############################################################
+# Author    :   Felipe Bagni
+# Email     :   febagni@usp.br
+# NUSP      :   11257571
+##############################################################
+# Author    :   Gabriel Yugo Kishida
+# Email     :   gabriel.kishida@usp.br
+# NUSP      :   11257647
+##############################################################
+
 import numpy as np
+from plotter import distance_graph
 
-def euler_simples(y0, z0, n, I, f, g):
-    x = []
-    y = [y0]
-    z = [z0]
-    h = (I[1] - I[0])/n
-    for l in range(n+1):
-        x.append(I[0] + h * l)
-    for l in range(1, n+1):
-        K1y = f(x[l-1], y[l-1], z[l-1])
-        K1z = g(x[l-1], y[l-1], z[l-1])
-  
-        y.append(y[l-1] + (K1y)*h)
-        z.append(z[l-1] + (K1z)*h)
-    Y = []
-    for i in range(len(y)):
-        tmp = [y[i], z[i]]
-        Y.append(tmp)
-        
-    return np.array(Y)
+'''
+The Euler's forward method or explicit Euler's method
+or Euler-Cauchy method is formulated as:
+    y[i+1] = y[i] + h * f(x[i], y[i]),
     
-# euler modificado
-def euler_sistema(y0, z0, n, I, f, g):
-    """
-    y0: valor inicial de y
-    z0: valor inicial de z
-    n: quantos pontos teremos no dominio I
-    I: lista do tipo [x0, xf]
-    f: função de callback do tipo f(x, y, z)
-    g: função de callback do tipo g(x, y, z)
-    """
-    x = []
-    y = [y0]
-    z = [z0]
-    h = (I[1] - I[0])/n
-    for l in range(n+1):
-        x.append(I[0] + h * l)
-    for l in range(1, n+1):
-        K1y = f(x[l-1], y[l-1], z[l-1])
-        K1z = g(x[l-1], y[l-1], z[l-1])
-        
-        K2y = f(x[l-1]+h/2, y[l-1] + h/2 * K1y, z[l-1] + h/2 * K1z)
-        K2z = g(x[l-1]+h/2, y[l-1] + h/2 * K1y, z[l-1] + h/2 * K1z)
-        
-        y.append(y[l-1] + (K2y)/2)
-        z.append(z[l-1] + (K2z)/2)
-    Y = []
-    for i in range(len(y)):
-        tmp = [y[i], z[i]]
-        Y.append(tmp)
-        
-    return np.array(Y)
+where f(x[i], y[i]) is the differential equation evaluated
+at x[i] and y[i].
+'''
 
-y0 = 4
-z0 = 2
-I = [0, 1]
-n = 2
-f = lambda x, y, z: z
-g = lambda x, y, z: -x*z-2*y
-resultado = euler_simples(y0, z0, n, I, f, g)
-print(resultado)
+
+def forwardEuler(f, yinit, x_range, h):
+    '''
+    This function/module performs the forward Euler method steps.
+    '''
+    m = len(yinit) # Number of ODEs
+    n = int((x_range[-1] - x_range[0])/h) # Number of sub-intervals
+    
+    x = x_range[0] # Initializes variable x
+    y = yinit # Initializes variable y
+    
+    xsol = np.empty(0) # Creates an empty array for x
+    xsol = np.append(xsol, x) # Fills in the first element of xsol
+
+    ysol = np.empty(0) # Creates an empty array for y
+    ysol = np.append(ysol, y) # Fills in the initial conditions
+
+    for _ in range(n):
+        yprime = f(x, y) # Evaluates dy/dx
+        
+        for j in range(m):
+            y[j] = y[j] + h*yprime[j] # Eq. (8.2)
+            
+        x += h # Increase x-step
+        xsol = np.append(xsol, x) # Saves it in the xsol array
+        
+        for r in range(len(y)):
+            ysol = np.append(ysol, y[r]) # Saves all new y's 
+            
+    return [xsol, ysol]
+
+
+#########################################################################################
+
+# passar para exercicio-#.py
+
+def myFunc(x, y):
+    '''
+    We define our ODEs in this function
+    '''
+    dy = np.zeros((len(y)))
+    dy[0] = 3*(1+x) - y[0]
+    return dy
+
+
+h = 0.2
+x = np.array([1.0, 2.0])
+yinit = np.array([4.0]) #np.array([4.0, 1.0])
+
+
+[ts, ys] = forwardEuler(f=myFunc, yinit=yinit, x_range=x, h=h)
+
+
+#--- Calculates the exact solution, for comparison ---#
+dt = int((x[-1] - x[0]) / h)
+t = [x[0]+i*h for i in range(dt+1)]
+yexact = []
+for i in range(dt+1):
+    ye = 3*t[i] + np.exp(1-t[i])
+    yexact.append(ye)
+
+distance_graph(ts, ys, t, yexact, x)
