@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 ##############################################################
-# File      :   euler-forward.py
+# File      :   euler_forward.py
 # Project   :   MAP3122 - EP02 - Metodos numericos para 
 #                                resolucao de EDOs
 # Date      :   April/2021#!/usr/bin/env python3

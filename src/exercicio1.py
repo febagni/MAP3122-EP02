@@ -19,6 +19,7 @@
 import numpy as np
 from plotter import plot_scatter, get_time_array
 from rk4 import rk4system, calc_error
+from euler_backward import implicit_euler_system
 
 def explicit_solution(t):
 
@@ -66,11 +67,21 @@ def exercise1_test1():
 
     print(R)
 
+def exercise1_test2():
+    u = np.array([-8.79])
+    f = []
+    f.append(lambda t,x : 2*t + (x-t*t)*(x-t*t))
+
+    resposta_euler_implicito = implicit_euler_system(u, f, 1.1, 3.0, 5000, 7)
+    print(resposta_euler_implicito[5000])
+
 def main():
     '''
     Brief : Essa funçao eh a main do exercicio 1
     '''
-    exercise1_test1()
+    #exercise1_test1()
+    exercise1_test2()
 
-if __name__ == "__main__":
-    main()
+#if __name__ == "__main__":
+#    main()
+main()

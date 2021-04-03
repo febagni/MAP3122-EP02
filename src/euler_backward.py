@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 ##############################################################
-# File      :   euler-backward.py
+# File      :   euler_backward.py
 # Project   :   MAP3122 - EP02 - Metodos numericos para 
 #                                resolucao de EDOs
 # Date      :   April/2021
@@ -59,7 +59,7 @@ def newton_iter(t, u, f, h, last_u):
         G[i] = u[i] - h * f[i](t,u) - last_u[i]
     return u - np.matmul(inv_jacobian, G) # == new_u
 
-def implicit_euler_iter(u, t, h, f, newton_iter):
+def implicit_euler_iter(u, t, h, f, newton_iter_num):
     '''
     Brief : Essa funcao calcula uma iteracao do método de aproximacao de Newton para
             obter U_k+1 - com o objetivo de se apicar o método implícito de Euler.
@@ -72,7 +72,7 @@ def implicit_euler_iter(u, t, h, f, newton_iter):
     '''
     newton_u = u.copy()
     euler_u = u.copy()
-    for _ in range(newton_iter) :
+    for _ in range(newton_iter_num) :
         newton_u = newton_iter(t, newton_u, f, h, u)
     for i in range(len(u)):
         euler_u[i] = u + h * f[i](t, newton_u)
@@ -100,9 +100,3 @@ def implicit_euler_system(u, f, t0, tf, n, newton_iter):
         t += h
     return u_values
     
-u = np.array([-8.79])
-f = []
-f.append(lambda t,x : 2*t + (x-t*t)*(x-t*t))
-
-resposta_euler_implicito = implicit_euler_system(u, f, 1.1, 3.0, 5000, 7)
-print(resposta_euler_implicito[5000])
