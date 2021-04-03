@@ -45,8 +45,11 @@ def forwardEuler(f, yinit, x_range, h):
     ysol = np.append(ysol, y) # Fills in the initial conditions
 
     for _ in range(n):
-        yprime = f(x, y) # Evaluates dy/dx
-        
+        yprime = []
+        yprime.append(f[0](x, y)) # Evaluates dy/dx
+
+        #yprime = myFunc(x, y)
+
         for j in range(m):
             y[j] = y[j] + h*yprime[j] # Eq. (8.2)
             
@@ -62,22 +65,26 @@ def forwardEuler(f, yinit, x_range, h):
 #########################################################################################
 
 # passar para exercicio-#.py
-
+'''
 def myFunc(x, y):
-    '''
-    We define our ODEs in this function
-    '''
+'''
+    #We define our ODEs in this function
+'''
     dy = np.zeros((len(y)))
     dy[0] = 3*(1+x) - y[0]
+
     return dy
 
+
+f = []
+f.append(lambda t,u : 3*(1 + t) - u[0])  #=dx 
 
 h = 0.2
 x = np.array([1.0, 2.0])
 yinit = np.array([4.0]) #np.array([4.0, 1.0])
 
 
-[ts, ys] = forwardEuler(f=myFunc, yinit=yinit, x_range=x, h=h)
+[ts, ys] = forwardEuler(f=f, yinit=yinit, x_range=x, h=h)
 
 
 #--- Calculates the exact solution, for comparison ---#
@@ -88,4 +95,5 @@ for i in range(dt+1):
     ye = 3*t[i] + np.exp(1-t[i])
     yexact.append(ye)
 
-distance_graph(ts, ys, t, yexact, x)
+distance_graph(ts, ys, t, yexact, x, "sol implementada", "sol exata")
+'''

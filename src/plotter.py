@@ -43,13 +43,12 @@ def plot_multiple_graphs(x, y, title, n_rows, n_columns):
     plt.suptitle(title)
     plt.show()
 
-def plot_multiple_distance_graphs(x, y, exact_y, title, n_rows, n_columns):
+def plot_multiple_distance_graphs(x, y, exact_y, title, n_rows, n_columns, legend1, legend2):
     for i in range(len(y)):
         plt.subplot(n_rows, n_columns, i+1)
         plt.plot(x,y[i])
         plt.plot(x,exact_y[i])
-        plt.legend(["Method solution", 
-                "Exact solution"], loc=2, fontsize=6)
+        plt.legend([legend1, legend2], loc=2, fontsize=6)
         plt.title("Aproximacao para x" + str(i) + "(t)")
         plt.subplots_adjust(hspace=0.4, wspace = 0.5)
     plt.suptitle(title)
@@ -59,12 +58,12 @@ def plot_multiple_distance_graphs(x, y, exact_y, title, n_rows, n_columns):
 
 #line diff graph method
 
-def distance_graph(ts, ys, t, yexact, I):
+def distance_graph(ts, ys, t, yexact, I, legend1, legend2):
     plt.plot(ts, ys, 'r')
     plt.plot(t, yexact, 'b')
     plt.xlim(I[0], I[1])
-    plt.legend(["Method solution", 
-                "Exact solution"], loc=2)
+    plt.legend([legend1, 
+                legend2], loc=2)
     plt.xlabel('x', fontsize=17)
     plt.ylabel('y', fontsize=17)
     plt.tight_layout()
