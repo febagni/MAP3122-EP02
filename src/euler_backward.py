@@ -75,7 +75,7 @@ def implicit_euler_iter(u, t, h, f, newton_iter_num):
     for _ in range(newton_iter_num) :
         newton_u = newton_iter(t, newton_u, f, h, u)
     for i in range(len(u)):
-        euler_u[i] = u + h * f[i](t, newton_u)
+        euler_u[i] = u[i] + h * f[i](t, newton_u)
     return euler_u
 
 def implicit_euler_system(u, f, t0, tf, n, newton_iter_num):

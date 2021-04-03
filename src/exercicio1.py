@@ -46,7 +46,7 @@ def get_exact_x(time_array):
 def plot_x (t,x,title):
     x = np.transpose(x)
     exact_x = np.transpose(get_exact_x(t))
-    plot_multiple_distance_graphs(t, x, exact_x, title, 2, 2)
+    plot_multiple_distance_graphs(t, x, exact_x, title, 2, 2 , "Valor calculado", "Valor Exato")
 
 def exercise1_test1():
     '''
@@ -101,7 +101,7 @@ def exercise1_test2():
     plot_2d_1f(ts, resposta_euler_implicito, str("Gráfico de Solução por Euler Implicito"), 'r', "solução pelo método")
     plot_2d_1f(t, yexact, str("Gráfico de Solução Explícita"), 'b', "solução exata explícita")
 
-    distance_graph(ts, resposta_euler_implicito, t, yexact, I)
+    distance_graph(ts, resposta_euler_implicito, t, yexact, I, "Valor Calculado", "Valor Exato")
 
     #Falta cáculo de E_2 e plots 
 

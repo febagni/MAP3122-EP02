@@ -66,6 +66,34 @@ def rk4system(x0, A, t0, tf, n):
         rk4values.append(x)
     return [tsol, np.array(rk4values)]
 
+def rk4systemlambda(u, f, t0, tf, n):
+    '''
+    Brief:  Essa funçao aplica o algoritmo Runge Kutta resolvendo um SPVI
+            sendo o sistema de forma linear. O sistema pode ser fornecido
+            por meio da matriz A.
+    Parâmetros: u - valores iniciais, 
+                A - matriz do sistema linear,
+                t0 - valor inicial de t, 
+                tf - valor final de t,
+                n - número de divisoes entre t0 e tf.
+    '''
+    newx = np.zeros(len(f))
+    x = u.copy()
+    rk4values = []
+    rk4values.append(x)
+    tsol = []
+    h = (tf-t0)/n
+    t = t0
+    tsol.append(t)
+    for _ in range (1,n+1):
+        for i in range (len(f)):
+            newx[i] = rk4iter(x[i],t,h,f[i])
+        t = t + h
+        x = newx.copy()
+        tsol.append(t)
+        rk4values.append(x)
+    return [tsol, np.array(rk4values)]
+
 def calc_error(t_solution, calc_solution, explicit_solution):
     '''
     Brief : Essa funçao é responsável por calcular o erro de cada iteraçao
