@@ -78,7 +78,7 @@ def implicit_euler_iter(u, t, h, f, newton_iter_num):
         euler_u[i] = u + h * f[i](t, newton_u)
     return euler_u
 
-def implicit_euler_system(u, f, t0, tf, n, newton_iter):
+def implicit_euler_system(u, f, t0, tf, n, newton_iter_num):
     '''
     Brief : Essa funcao calcula iteracoes do método de Euler implícito para um
             sistema de funcoes.
@@ -86,7 +86,7 @@ def implicit_euler_system(u, f, t0, tf, n, newton_iter):
                 f - vetor de funcoes que criam o sistema,
                 t0 e tf - tempos iniciais e finais da iteracao,
                 n - número de iteracoes do método de Euler a serem realizadas
-                newton_iter - números de iteracao de newton que serao feitas.
+                newton_iter_num - números de iteracao de newton que serao feitas.
     Retorna :   Valores de u para cada passo temporal calculado.
     '''
     u_values = []
@@ -94,9 +94,15 @@ def implicit_euler_system(u, f, t0, tf, n, newton_iter):
     u_values.append(new_u)
     h = (tf-t0)/n
     t = t0
+
+    tsol = np.empty(0) # Creates an empty array for t
+    tsol = np.append(tsol, t) # Fills in the first element of tsol
+
     for _ in range(1, n+1):
-        new_u = implicit_euler_iter(new_u,t,h,f,newton_iter)
+        new_u = implicit_euler_iter(new_u, t, h, f, newton_iter_num)
         u_values.append(new_u)
         t += h
-    return u_values
+        tsol = np.append(tsol, t) # Saves it in the tsol array
+
+    return [tsol, u_values]
     

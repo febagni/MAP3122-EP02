@@ -47,8 +47,10 @@ def rk4system(x0, A, t0, tf, n):
     x = x0.copy()
     rk4values = []
     rk4values.append(x)
+    tsol = []
     h = (tf-t0)/n
     t = t0
+    tsol.append(t)
     for _ in range (1,n+1):
         for i in range (len(A)):
             coef = A[i][i]
@@ -60,10 +62,11 @@ def rk4system(x0, A, t0, tf, n):
             newx[i] = rk4iter(x[i],t,h,f)
         t = t + h
         x = newx.copy()
+        tsol.append(t)
         rk4values.append(x)
-    return np.array(rk4values)
+    return [tsol, np.array(rk4values)]
 
-def calc_error(calc_solution, explicit_solution, t0, tf, n):
+def calc_error(t_solution, calc_solution, explicit_solution):
     '''
     Brief : Essa funçao é responsável por calcular o erro de cada iteraçao
             tendo as respostas explícitas.
@@ -73,10 +76,7 @@ def calc_error(calc_solution, explicit_solution, t0, tf, n):
                 n - número de iteracoes realizadas.
     Returns:    Um vetor com os valores de erro para cada iteracao.
     '''
-    h = (tf-t0)/n
-    t = t0
     errIter = []
-    for k in range (1, n+1):
-        errIter.append(max([abs(explicit_solution(t)[i] - calc_solution[k][i]) for i in range (len(calc_solution[k]))]))
-        t = t0 + h*k
+    for k in range (len(calc_solution)):
+        errIter.append(max([abs(explicit_solution(t_solution[k])[i] - calc_solution[k][i]) for i in range (len(calc_solution[k]))]))
     return errIter
