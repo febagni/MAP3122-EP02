@@ -17,8 +17,7 @@
 
 import numpy as np 
 
-
-def rk4iter(x, t, h, f) :
+def rk4iter(u, t, h, f) :
     '''
     Brief :Essa funçao aplica o algoritmo Runge Kutta em uma unica iteracao
     Parâmetros: x - valor a ser iterado,
@@ -26,47 +25,22 @@ def rk4iter(x, t, h, f) :
                 h - passo da funçao,
                 f - funcao f para aplicar Runge Kutta.
     '''
-    K1 = h*f(t,x)
-    K2 = h*f(t+h/2, x + K1/2)
-    K3 = h*f(t+h/2, x + K2/2)
-    K4 = h*f(t+h, x + K3)
-    return x + (K1 + 2*K2 + 2*K3 + K4)/6
+    K1 = np.zeros(len(f))
+    K2 = np.zeros(len(f))
+    K3 = np.zeros(len(f))
+    K4 = np.zeros(len(f))
 
-def rk4system(x0, A, t0, tf, n):
-    '''
-    Brief:  Essa funçao aplica o algoritmo Runge Kutta resolvendo um SPVI
-            sendo o sistema de forma linear. O sistema pode ser fornecido
-            por meio da matriz A.
-    Parâmetros: x0 - valores iniciais, 
-                A - matriz do sistema linear,
-                t0 - valor inicial de t, 
-                tf - valor final de t,
-                n - número de divisoes entre t0 e tf.
-    '''
-    newx = np.zeros(len(A))
-    x = x0.copy()
-    rk4values = []
-    rk4values.append(x)
-    tsol = []
-    h = (tf-t0)/n
-    t = t0
-    tsol.append(t)
-    for _ in range (1,n+1):
-        for i in range (len(A)):
-            coef = A[i][i]
-            sum = 0
-            for j in range (len(A)):
-                if i != j : 
-                    sum += A[i][j]*x[j]
-            f = lambda t, x : coef*x + sum
-            newx[i] = rk4iter(x[i],t,h,f)
-        t = t + h
-        x = newx.copy()
-        tsol.append(t)
-        rk4values.append(x)
-    return [tsol, np.array(rk4values)]
+    for i in range(len(f)):
+        K1[i] = h*f[i](t,u)
+    for i in range(len(f)):
+        K2[i] = h*f[i](t + h/2,u + K1/2)
+    for i in range(len(f)):
+        K3[i] = h*f[i](t + h/2,u + K2/2)
+    for i in range(len(f)):
+        K4[i] = h*f[i](t+h,u + K3)
+    return u + (K1 + 2*K2 +2*K3 + K4)/6
 
-def rk4systemlambda(u, f, t0, tf, n):
+def rk4system(u, f, t0, tf, n):
     '''
     Brief:  Essa funçao aplica o algoritmo Runge Kutta resolvendo um SPVI
             sendo o sistema de forma linear. O sistema pode ser fornecido
@@ -86,8 +60,7 @@ def rk4systemlambda(u, f, t0, tf, n):
     t = t0
     tsol.append(t)
     for _ in range (1,n+1):
-        for i in range (len(f)):
-            newx[i] = rk4iter(x[i],t,h,f[i])
+        newx = rk4iter(x,t,h,f)
         t = t + h
         x = newx.copy()
         tsol.append(t)

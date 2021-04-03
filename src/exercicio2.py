@@ -19,7 +19,7 @@ import numpy as np
 from plotter import plot_2d_1f, distance_graph
 from euler_backward import implicit_euler_system
 from euler_forward import forwardEuler
-from rk4 import rk4systemlambda
+from rk4 import rk4system
 
 def init():
     x_0 = 1.5
@@ -82,11 +82,10 @@ def ex2_4():
     x_0, y_0, I = init()
     u_0 = np.array([x_0, y_0])
     f = []
-    n = 1000
-    h = (I[1] - I[0])/n
+    n = 500
     f.append(lambda t,u : ((2/3)*u[0]) - ((4/3)*u[0]*u[1])) #=dx 
     f.append(lambda t,u : u[0]*u[1] - u[1]) #=dy
-    [ts, resposta_rk4] = rk4systemlambda(u_0,f,I[0],I[1],n)
+    [ts, resposta_rk4] = rk4system(u_0,f,I[0],I[1],n)
     x_sol = np.transpose(resposta_rk4)[0]
     y_sol = np.transpose(resposta_rk4)[1]
 

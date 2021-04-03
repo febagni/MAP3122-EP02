@@ -56,18 +56,20 @@ def exercise1_test1():
     print("Exercício 1 - Teste 1: ")
 
     x0 = [1,1,1,-1]
-    
-    A = np.array([[-2,-1,-1,-2],
-                [ 1,-2, 2,-1],
-                [-1,-2,-2,-1],
-                [ 2,-1, 1,-2]])
+
+    f = []
+
+    f.append(lambda t,x : -2*x[0] -1*x[1] -1*x[2] -2*x[3])
+    f.append(lambda t,x : 1*x[0] -2*x[1] + 2*x[2] -1*x[3])
+    f.append(lambda t,x : -1*x[0] -2*x[1] -2*x[2] -1*x[3])
+    f.append(lambda t,x : 2*x[0] -1*x[1] + 1*x[2] -2*x[3])
 
     n = [20, 40, 80, 160, 320, 640]
 
     for i in range (len(n)-1):
-        [t_sol,x_t] = rk4system(x0, A, 0, 2, n[i]) 
+        [t_sol,x_t] = rk4system(x0, f, 0, 2, n[i]) 
         plot_x(t_sol,x_t,"Gráficos de x(t) para n=" + str(n[i]))
-        [t_aux,x_aux] = rk4system(x0, A, 0, 2, n[i + 1])
+        [t_aux,x_aux] = rk4system(x0, f, 0, 2, n[i + 1])
         erro = calc_error(t_sol, x_t, explicit_solution,)
         erro_aux = calc_error(t_aux, x_aux, explicit_solution)
         R = max(erro)/max(erro_aux)
