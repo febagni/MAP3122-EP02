@@ -41,23 +41,20 @@ def forwardEuler(f, yinit, x_range, h):
     xsol = np.empty(0) # Creates an empty array for x
     xsol = np.append(xsol, x) # Fills in the first element of xsol
 
-    ysol = np.empty(0) # Creates an empty array for y
-    ysol = np.append(ysol, y) # Fills in the initial conditions
+    ysol = []
+    ysol.append(y) # Fills in the initial conditions
+
 
     for _ in range(n):
-        yprime = []
-        yprime.append(f[0](x, y)) # Evaluates dy/dx
-
-        #yprime = myFunc(x, y)
 
         for j in range(m):
-            y[j] = y[j] + h*yprime[j] # Eq. (8.2)
+            y[j] = y[j] + h*f[j](x, y) # Eq. (8.2)
             
         x += h # Increase x-step
         xsol = np.append(xsol, x) # Saves it in the xsol array
         
         for r in range(len(y)):
-            ysol = np.append(ysol, y[r]) # Saves all new y's 
+            ysol.append(y[r]) # Saves all new y's 
             
     return [xsol, ysol]
 
