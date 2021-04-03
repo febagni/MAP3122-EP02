@@ -40,8 +40,10 @@ def ex2_1():
 
     [ts, ys] = forwardEuler(f, u_0, I, h)
 
-    x_sol = np.transpose(ys)[0]
-    y_sol = np.transpose(ys)[1]
+    print(ys)
+    
+    x_sol = ys[0]
+    y_sol = ys[1]
 
     #plot_2d_1f(ts, x_sol, str("Gráfico de Solução por Euler Implicito"), 'b', "solução pelo método")
     #plot_2d_1f(ts, y_sol, str("Gráfico de Solução por Euler Implicito"), 'r', "solução pelo método")
@@ -49,8 +51,6 @@ def ex2_1():
     distance_graph(ts, y_sol, ts, x_sol, I, "raposas", "coelhos")
 
     plot_2d_1f(x_sol, y_sol, str("Gráfico de Retrato de fase Coelhos X Raposas"), 'g', "retrato de fase")
-
-
 
 def ex2_2():
     print("Exercício 2.2: ")
@@ -65,6 +65,8 @@ def ex2_2():
     f.append(lambda t,u : u[0]*u[1] - u[1]) #=dy
 
     [ts, resposta_euler_implicito] = implicit_euler_system(u_0, f, I[0], I[1], n, newton_iter_num)
+
+    print(resposta_euler_implicito)
     
     x_sol = np.transpose(resposta_euler_implicito)[0]
     y_sol = np.transpose(resposta_euler_implicito)[1]
@@ -92,6 +94,6 @@ def ex2_4():
     plot_2d_1f(x_sol, y_sol, str("Gráfico de Retrato de fase Coelhos X Raposas"), 'g', "retrato de fase")
 
 def main ():
-    ex2_4()
+    ex2_2()
 
 main()
