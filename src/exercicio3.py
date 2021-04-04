@@ -65,8 +65,6 @@ def ex3_1():
         #plot_2d_1f(ts_rk,zs,"zs","red","a")
         plot_3d_graph(xs,ys,zs)
 
-
-
 def main():
     ex3_1()
 
