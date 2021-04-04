@@ -27,8 +27,11 @@ def get_time_array(t0,tf,n):
         t += h
     return time_array
 
-def plot_2d_1f(x, y, title, color_letter, label_msg):
-    plt.plot(x, y, label=label_msg, color=color_letter) 
+def plot_2d_1f(x, y, title, color_letter, label_msg=""):
+    if label_msg=="":
+        plt.plot(x, y, color=color_letter) 
+    else:
+        plt.plot(x, y, label=label_msg, color=color_letter) 
     plt.xlabel('x')
     plt.ylabel('y')
     plt.title(title)
@@ -64,6 +67,36 @@ def distance_graph(ts, ys, t, yexact, I, legend1, legend2):
     plt.xlabel('x', fontsize=17)
     plt.ylabel('y', fontsize=17)
     plt.tight_layout()
+    plt.show()
+
+def distance_graph_3(ts, xs, ys, zs, I, legend1, legend2, legend3):
+    plt.plot(ts, xs, "blue")
+    plt.plot(ts, ys, "black")
+    plt.plot(ts, zs, "red")
+    plt.xlim(I[0], I[1])
+    plt.legend([legend1, 
+                legend2,
+                legend3], loc=2)
+    plt.xlabel('x', fontsize=17)
+    plt.ylabel('y', fontsize=17)
+    plt.tight_layout()
+    plt.show()
+
+def pair_distance_graph_3(ts, xs, ys, zs, I, legend1, legend2, legend3, titles):
+    for i in range(2):
+        plt.subplot(1,2,i+1)
+        plt.plot(ts[i], xs[i], "blue")
+        plt.plot(ts[i], ys[i], "black")
+        plt.plot(ts[i], zs[i], "red")
+        plt.title(titles[i])
+        plt.xlim(I[0], I[1])
+        plt.legend([legend1, 
+                legend2,
+                legend3], loc=2)
+        plt.xlabel('x', fontsize=17)
+        plt.ylabel('y', fontsize=17)
+        plt.tight_layout() 
+    
     plt.show()
 
 def plot_3d_graph(xs,ys,zs):

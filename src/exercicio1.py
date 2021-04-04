@@ -20,6 +20,7 @@ import numpy as np
 from plotter import plot_2d_1f, get_time_array, distance_graph, plot_multiple_graphs, plot_multiple_distance_graphs
 from rk4 import rk4system, calc_error
 from euler_backward import implicit_euler_system
+from euler_forward import forwardEuler
 
 def explicit_solution(t):
 
@@ -90,6 +91,7 @@ def exercise1_test2():
 
     f.append(lambda t,x : 2*t + (x-t*t)*(x-t*t))
 
+    #[ts, resposta_euler_implicito] = forwardEuler(f, u_0, I , n)
     [ts, resposta_euler_implicito] = implicit_euler_system(u_0, f, I[0], I[1], n, newton_iter_num)
 
     #--- Calculates the exact solution, for comparison ---#

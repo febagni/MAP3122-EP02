@@ -24,7 +24,7 @@ from rk4 import rk4system
 def init():
     x_0 = 1.5
     y_0 = 1.5
-    I = np.array([0, 10.0])
+    I = np.array([0., 10.0])
     return x_0, y_0, I
 
 def ODE_solver(n, method):
@@ -98,9 +98,9 @@ def ex2_4():
 
 
 def main ():
-    #ex2_1()
-    #ex2_2()
+    ex2_1()
+    ex2_2()
     ex2_3()
-    #ex2_4()
+    ex2_4()
 
 main()
