@@ -27,73 +27,80 @@ def init():
     I = np.array([0, 10.0])
     return x_0, y_0, I
 
-def ex2_1():
-    print("Exercício 2.1: ")
+def ODE_solver(n, method):
     x_0, y_0, I = init()
     u_0 = np.array([x_0, y_0])
     f = []
-    n = 5000
-    h = (I[1] - I[0])/n
-    # u[0] == x e u[1] == y
+
     f.append(lambda t,u : ((2/3)*u[0]) - ((4/3)*u[0]*u[1])) #=dx 
     f.append(lambda t,u : u[0]*u[1] - u[1]) #=dy
 
-    [ts, ys] = forwardEuler(f, u_0, I, h)
+    if method=="euler_forward":
+        [ts, ys] = forwardEuler(f, u_0, I, n)
+    elif method=="euler_backward":
+        [ts, ys] = implicit_euler_system(u_0, f, I[0], I[1], n, newton_iter_num=7)
+    elif method=="rk4":
+        [ts, ys] = rk4system(u_0, f, I[0], I[1], n)
+    else:
+        print("Error: Method not found")
 
-    print(ys)
-    
-    x_sol = ys[0]
-    y_sol = ys[1]
+    return [ts, ys]
 
-    #plot_2d_1f(ts, x_sol, str("Gráfico de Solução por Euler Implicito"), 'b', "solução pelo método")
-    #plot_2d_1f(ts, y_sol, str("Gráfico de Solução por Euler Implicito"), 'r', "solução pelo método")
+def plot_graphs(ts, ys):
+    _, _, I = init()
+
+    x_sol = np.transpose(ys)[0]
+    y_sol = np.transpose(ys)[1]
 
     distance_graph(ts, y_sol, ts, x_sol, I, "raposas", "coelhos")
 
     plot_2d_1f(x_sol, y_sol, str("Gráfico de Retrato de fase Coelhos X Raposas"), 'g', "retrato de fase")
+
+
+
+def ex2_1():
+    print("Exercício 2.1: ")
+
+    [ts, ys] = ODE_solver(n=500, method="euler_forward")
+
+    plot_graphs(ts, ys)
 
 def ex2_2():
     print("Exercício 2.2: ")
-    x_0, y_0, I = init()
-    u_0 = np.array([x_0, y_0])
-    f = []
-    n = 1000
-    newton_iter_num = 7
-    #h = (I[1] - I[0])/n
-    # u[0] == x e u[1] == y
-    f.append(lambda t,u : ((2/3)*u[0]) - ((4/3)*u[0]*u[1])) #=dx 
-    f.append(lambda t,u : u[0]*u[1] - u[1]) #=dy
 
-    [ts, resposta_euler_implicito] = implicit_euler_system(u_0, f, I[0], I[1], n, newton_iter_num)
+    [ts, ys] = ODE_solver(n=1000, method="euler_backward")
 
-    print(resposta_euler_implicito)
+    plot_graphs(ts, ys)
     
-    x_sol = np.transpose(resposta_euler_implicito)[0]
-    y_sol = np.transpose(resposta_euler_implicito)[1]
 
-    #plot_2d_1f(ts, x_sol, str("Gráfico de Solução por Euler Implicito"), 'b', "solução pelo método")
-    #plot_2d_1f(ts, y_sol, str("Gráfico de Solução por Euler Implicito"), 'r', "solução pelo método")
+def ex2_3():
+    print("Exercício 2.3: ")
+    _, _, I = init()
+    n = [250, 500, 1000, 2000, 4000]
+    for n_i in n:
+        [ts_forward, ys_forward] = ODE_solver(n=n_i, method="euler_forward")
+        [ts_backward, ys_backward] = ODE_solver(n=n_i, method="euler_backward")
 
-    distance_graph(ts, y_sol, ts, x_sol, I, "raposas", "coelhos")
+        E = [np.asarray(j) - np.asarray(ys_forward[i]) for i,j in enumerate(ys_backward)] 
 
-    plot_2d_1f(x_sol, y_sol, str("Gráfico de Retrato de fase Coelhos X Raposas"), 'g', "retrato de fase")
+        E_x_sol = np.transpose(E)[0]
+        E_y_sol = np.transpose(E)[1]
+
+        distance_graph(ts_forward, E_x_sol, ts_backward, E_y_sol, I, "E_x", "E_y")
+    
 
 def ex2_4():
-    x_0, y_0, I = init()
-    u_0 = np.array([x_0, y_0])
-    f = []
-    n = 500
-    f.append(lambda t,u : ((2/3)*u[0]) - ((4/3)*u[0]*u[1])) #=dx 
-    f.append(lambda t,u : u[0]*u[1] - u[1]) #=dy
-    [ts, resposta_rk4] = rk4system(u_0,f,I[0],I[1],n)
-    x_sol = np.transpose(resposta_rk4)[0]
-    y_sol = np.transpose(resposta_rk4)[1]
+    print("Exercício 2.4: ")
 
-    distance_graph(ts, y_sol, ts, x_sol, I, "raposas", "coelhos")
+    [ts, ys] = ODE_solver(n=1000, method="rk4")
 
-    plot_2d_1f(x_sol, y_sol, str("Gráfico de Retrato de fase Coelhos X Raposas"), 'g', "retrato de fase")
+    plot_graphs(ts, ys)
+
 
 def main ():
-    ex2_2()
+    #ex2_1()
+    #ex2_2()
+    ex2_3()
+    #ex2_4()
 
 main()
