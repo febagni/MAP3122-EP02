@@ -29,13 +29,12 @@ def rk4iter(u, t, h, f) :
     K2 = np.zeros(len(f))
     K3 = np.zeros(len(f))
     K4 = np.zeros(len(f))
-
     for i in range(len(f)):
         K1[i] = h*f[i](t,u)
     for i in range(len(f)):
-        K2[i] = h*f[i](t + h/2,u + K1/2)
+        K2[i] = h*f[i](t + h/2,u + K1*0.5)
     for i in range(len(f)):
-        K3[i] = h*f[i](t + h/2,u + K2/2)
+        K3[i] = h*f[i](t + h/2,u + K2*0.5)
     for i in range(len(f)):
         K4[i] = h*f[i](t+h,u + K3)
     return u + (K1 + 2*K2 +2*K3 + K4)/6
