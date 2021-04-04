@@ -16,6 +16,7 @@
 ##############################################################
 
 import matplotlib.pyplot as plt
+from mpl_toolkits import mplot3d
  
 def get_time_array(t0,tf,n):
     time_array = []
@@ -67,4 +68,9 @@ def distance_graph(ts, ys, t, yexact, I, legend1, legend2):
     plt.xlabel('x', fontsize=17)
     plt.ylabel('y', fontsize=17)
     plt.tight_layout()
+    plt.show()
+
+def plot_3d_graph(xs,ys,zs):
+    ax = plt.axes(projection="3d")
+    ax.plot3D(xs,ys,zs)
     plt.show()
