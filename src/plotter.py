@@ -55,10 +55,6 @@ def plot_multiple_distance_graphs(x, y, exact_y, title, n_rows, n_columns, legen
     plt.suptitle(title)
     plt.show()
 
-#3d graph method
-
-#line diff graph method
-
 def distance_graph(ts, ys, t, yexact, I, legend1, legend2):
     plt.plot(ts, ys, 'r')
     plt.plot(t, yexact, 'b')

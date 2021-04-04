@@ -105,4 +105,3 @@ def implicit_euler_system(u, f, t0, tf, n, newton_iter_num):
         tsol = np.append(tsol, t) # Saves it in the tsol array
 
     return [tsol, u_values]
-    

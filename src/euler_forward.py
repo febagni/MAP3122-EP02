@@ -27,7 +27,6 @@ where f(x[i], y[i]) is the differential equation evaluated
 at x[i] and y[i].
 '''
 
-
 def forwardEuler(f, yinit, I, n):
     '''
     This function/module performs the forward Euler method steps.
@@ -55,40 +54,3 @@ def forwardEuler(f, yinit, I, n):
         xsol = np.append(xsol, x) # Saves it in the xsol array
         ysol.append(y.copy()) # Saves all new y's 
     return [xsol, ysol]
-
-
-#########################################################################################
-
-# passar para exercicio-#.py
-'''
-def myFunc(x, y):
-'''
-    #We define our ODEs in this function
-'''
-    dy = np.zeros((len(y)))
-    dy[0] = 3*(1+x) - y[0]
-
-    return dy
-
-
-f = []
-f.append(lambda t,u : 3*(1 + t) - u[0])  #=dx 
-
-h = 0.2
-x = np.array([1.0, 2.0])
-yinit = np.array([4.0]) #np.array([4.0, 1.0])
-
-
-[ts, ys] = forwardEuler(f=f, yinit=yinit, x_range=x, h=h)
-
-
-#--- Calculates the exact solution, for comparison ---#
-dt = int((x[-1] - x[0]) / h)
-t = [x[0]+i*h for i in range(dt+1)]
-yexact = []
-for i in range(dt+1):
-    ye = 3*t[i] + np.exp(1-t[i])
-    yexact.append(ye)
-
-distance_graph(ts, ys, t, yexact, x, "sol implementada", "sol exata")
-'''
