@@ -28,21 +28,22 @@ at x[i] and y[i].
 '''
 
 
-def forwardEuler(f, yinit, x_range, h):
+def forwardEuler(f, yinit, I, n):
     '''
     This function/module performs the forward Euler method steps.
     '''
     m = len(yinit) # Number of ODEs
-    n = int((x_range[-1] - x_range[0])/h) # Number of sub-intervals
+
+    h = (I[1] - I[0])/n
     
-    x = x_range[0] # Initializes variable x
-    y = yinit # Initializes variable y
+    x = I[0] # Initializes variable x
+    y = yinit.copy() # Initializes variable y
     
     xsol = np.empty(0) # Creates an empty array for x
     xsol = np.append(xsol, x) # Fills in the first element of xsol
 
     ysol = []
-    ysol.append(y) # Fills in the initial conditions
+    ysol.append(y.copy()) # Fills in the initial conditions
 
 
     for _ in range(n):
@@ -52,10 +53,7 @@ def forwardEuler(f, yinit, x_range, h):
             
         x += h # Increase x-step
         xsol = np.append(xsol, x) # Saves it in the xsol array
-        
-        for r in range(len(y)):
-            ysol.append(y[r]) # Saves all new y's 
-            
+        ysol.append(y.copy()) # Saves all new y's 
     return [xsol, ysol]
 
 
