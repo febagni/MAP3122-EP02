@@ -32,10 +32,10 @@ def plot_2d_1f(x, y, title, color_letter, label_msg=""):
         plt.plot(x, y, color=color_letter) 
     else:
         plt.plot(x, y, label=label_msg, color=color_letter) 
+        plt.legend()
     plt.xlabel('x')
     plt.ylabel('y')
     plt.title(title)
-    plt.legend()
     plt.show()
 
 def plot_multiple_graphs(x, y, title, n_rows, n_columns):

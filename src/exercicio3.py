@@ -121,7 +121,7 @@ def ex3_2():
     ex3_sensibility_test("euler_forward")
 
 def main():
-    #ex3_1()
-    ex3_2()
+    ex3_1()
+    #ex3_2()
 
 main()
