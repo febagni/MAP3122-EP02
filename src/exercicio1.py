@@ -1,4 +1,3 @@
-
 #!/usr/bin/env python3
 
 ##############################################################
@@ -134,7 +133,7 @@ def exercise1_test2():
     plot_2d_1f(ts, resposta_euler_implicito, str("Gráfico de Solução por Euler Implicito"), 'r', "t", "x", "solução pelo método x(t)")
     plot_2d_1f(t, yexact, str("Gráfico de Solução Explícita"), 'b', "t", "x", "solução exata explícita x*(t)")
 
-    distance_graph(ts, resposta_euler_implicito, t, yexact, I, "Valor Calculado", "Valor Exato", "t", "x")
+    distance_graph(ts, resposta_euler_implicito, t, yexact, I, "Valor Calculado", "Valor Exato", "t", "x", "Comparação da solução com a solução explícita")
 
     #Falta cáculo de E_2 e plots 
 

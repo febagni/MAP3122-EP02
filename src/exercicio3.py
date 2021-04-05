@@ -16,7 +16,7 @@
 ##############################################################
 
 import numpy as np
-from plotter import plot_2d_1f, distance_graph, plot_3d_graph, distance_graph_3, pair_distance_graph_3
+from plotter import plot_2d_1f, distance_graph, plot_3d_graph, distance_graph_3
 from euler_backward import implicit_euler_system
 from euler_forward import forwardEuler
 from rk4 import rk4system
@@ -90,7 +90,7 @@ def ex3_methods(method):
             method_name = "Runge-Kutta 4"
         elif method == "euler_forward":
             [ts, sol] = forwardEuler(f, u_0, I, n)
-            method_name = "Euler Implícito"
+            method_name = "Euler Explícito"
         else : print("Error: Method not found")
         xs, ys, zs = divide_sol(sol)
 
@@ -144,12 +144,12 @@ def ex3_sensibility_test(method):
     elif method == "euler_forward":
         [ts1, sol1] = forwardEuler(f, caso1, I, n)
         [ts2, sol2] = forwardEuler(f, caso2, I, n)
-        method_name = "Euler Implícito"
+        method_name = "Euler Explícito"
     else : print("Error: Method not found")
     print("| Caso: 1 | Método: " + method_name + " | Raposas: " + str(sol1[n][2]) + " | Lebres: " + str(sol1[n][1]) + " | Coelhos: " + str(sol1[n][0]) + " |")
     print("| Caso: 2 | Método: " + method_name + " | Raposas: " + str(sol2[n][2]) + " | Lebres: " + str(sol2[n][1]) + " | Coelhos: " + str(sol2[n][0]) + " |")
     print()
-    print("As raposas cresceram: " + str(((sol2[n][2]-sol1[n][2])/sol1[n][2])*100) + "% , as Lebres cresceram: " + str(((sol2[n][1]-sol1[n][1])/sol1[n][1])*100) + "%, e os coelhos cresceram: " + str(((sol2[n][0]-sol1[n][0])/sol1[n][0])*100))
+    print("As raposas cresceram: " + str(((sol2[n][2]-sol1[n][2])/sol1[n][2])*100) + "% , as Lebres cresceram: " + str(((sol2[n][1]-sol1[n][1])/sol1[n][1])*100) + "%, e os coelhos cresceram: " + str(((sol2[n][0]-sol1[n][0])/sol1[n][0])*100) + "%.")
     print()
     xs1, ys1, zs1 = divide_sol(sol1)
     xs2, ys2, zs2 = divide_sol(sol2)
