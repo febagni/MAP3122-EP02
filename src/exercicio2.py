@@ -22,12 +22,23 @@ from euler_forward import forwardEuler
 from rk4 import rk4system
 
 def init():
+    '''
+    Brief :     Funcao inicializadora que fornece valores comuns às análises do exercício
+    Returns:    Valores iniciais u_0 / Intervalo I = [t0, tf]
+    '''
     x_0 = 1.5
     y_0 = 1.5
     I = np.array([0., 10.0])
     return x_0, y_0, I
 
 def ODE_solver(n, method):
+    '''
+    Brief : Essa funçao resolve a EDO para diferentes métodos, aplicando "n" iteracoes.
+    Parameters: n - Número de iteracoes a serem chamadas,
+                method - Nome do método a ser utilizado.
+    Returns:    ts - Valores de tempo onde a solucao é analisada;
+                ys - Valores da soluçao da EDO calculados
+    '''
     x_0, y_0, I = init()
     u_0 = np.array([x_0, y_0])
     f = []
@@ -52,11 +63,9 @@ def plot_graphs(ts, ys):
     x_sol = np.transpose(ys)[0]
     y_sol = np.transpose(ys)[1]
 
-    distance_graph(ts, y_sol, ts, x_sol, I, "raposas", "coelhos")
+    distance_graph(ts, y_sol, ts, x_sol, I, "Raposas", "coelhos")
 
     plot_2d_1f(x_sol, y_sol, str("Gráfico de Retrato de fase Coelhos X Raposas"), 'g', "retrato de fase")
-
-
 
 def ex2_1():
     print("Exercício 2.1: ")

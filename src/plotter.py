@@ -27,45 +27,50 @@ def get_time_array(t0,tf,n):
         t += h
     return time_array
 
-def plot_2d_1f(x, y, title, color_letter, label_msg=""):
+def plot_2d_1f(x, y, title, color_letter, labelx, labely, label_msg=""):
     if label_msg=="":
         plt.plot(x, y, color=color_letter) 
     else:
         plt.plot(x, y, label=label_msg, color=color_letter) 
         plt.legend()
-    plt.xlabel('x')
-    plt.ylabel('y')
+    plt.xlabel(labelx)
+    plt.ylabel(labely)
     plt.title(title)
     plt.show()
 
-def plot_multiple_graphs(x, y, title, n_rows, n_columns):
+def plot_multiple_graphs(x, y, title, n_rows, n_columns, legend, xlabel, ylabel):
     for i in range(len(y)):
         plt.subplot(n_rows, n_columns, i+1)
         plt.plot(x,y[i])
+        plt.legend([legend], loc=2, fontsize=6)
         plt.title("Aproximacao para x" + str(i) + "(t)")
+        plt.xlabel(xlabel)
+        plt.ylabel(ylabel)
         plt.subplots_adjust(hspace=0.4, wspace = 0.5)
     plt.suptitle(title)
     plt.show()
 
-def plot_multiple_distance_graphs(x, y, exact_y, title, n_rows, n_columns, legend1, legend2):
+def plot_multiple_distance_graphs(x, y, exact_y, title, n_rows, n_columns, legend1, legend2, xlabel, ylabel):
     for i in range(len(y)):
         plt.subplot(n_rows, n_columns, i+1)
         plt.plot(x,y[i])
         plt.plot(x,exact_y[i])
         plt.legend([legend1, legend2], loc=2, fontsize=6)
         plt.title("Aproximacao para x" + str(i) + "(t)")
+        plt.xlabel(xlabel)
+        plt.ylabel(ylabel)
         plt.subplots_adjust(hspace=0.4, wspace = 0.5)
     plt.suptitle(title)
     plt.show()
 
-def distance_graph(ts, ys, t, yexact, I, legend1, legend2):
+def distance_graph(ts, ys, t, yexact, I, legend1, legend2, xlabel, ylabel):
     plt.plot(ts, ys, 'r')
     plt.plot(t, yexact, 'b')
     plt.xlim(I[0], I[1])
     plt.legend([legend1, 
                 legend2], loc=2)
-    plt.xlabel('x', fontsize=17)
-    plt.ylabel('y', fontsize=17)
+    plt.xlabel(xlabel, fontsize=17)
+    plt.ylabel(ylabel, fontsize=17)
     plt.tight_layout()
     plt.show()
 

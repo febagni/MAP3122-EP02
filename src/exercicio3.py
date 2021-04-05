@@ -122,6 +122,6 @@ def ex3_2():
 
 def main():
     ex3_1()
-    #ex3_2()
+    ex3_2()
 
 main()
