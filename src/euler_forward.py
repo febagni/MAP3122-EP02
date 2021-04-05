@@ -48,7 +48,7 @@ def forwardEuler(f, yinit, I, n):
     for _ in range(n):
 
         for j in range(m):
-            y[j] = y[j] + h*f[j](x, y) # Eq. (8.2)
+            y[j] = y[j] + h*f[j](x, y) # Euler-forward eq.
             
         x += h # Increase x-step
         xsol = np.append(xsol, x) # Saves it in the xsol array
